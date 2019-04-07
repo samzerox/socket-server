@@ -35,7 +35,12 @@ export default class Server {
         console.log('Escuchando conexiones - sockets');
 
         this.io.on('connection', cliente => {
-            console.log('Cliente conectado');
+
+            // Conectar cliente
+            socket.conectarCliente( cliente );
+                   
+            // Configurar Usuario
+            socket.configurarUsuario( cliente, this.io );
 
             // Mensajes
             socket.mensaje( cliente, this.io );
@@ -43,6 +48,7 @@ export default class Server {
 
             // Desconectar
             socket.desconectar( cliente );
+            
            
         });
         
@@ -51,6 +57,7 @@ export default class Server {
 
     start( callback: Function) {
         
-        this.httpServer.listen( this.port, callback);
+        // this.httpServer.listen( this.port, callback );  <- Estaba asi pero me marcaba un error, lo solucione poniendole ()
+        this.httpServer.listen( this.port, callback() );
     }
 }
